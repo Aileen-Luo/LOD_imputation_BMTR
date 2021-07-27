@@ -11,8 +11,17 @@ BMTR (yobs, censpt, Zmat, file = 'mvnorm_cens.stan',...)
 
 # Arguments
 **yobs** a data frame or a matrix containing the incomplete data. Missing values are coded as NA.
+
 **Zmat** a data frame or a matrix for covariates, including intercept; Numeric design matrix with length(yobs) rows with predictors for yobs. Matrix Zmat may have no missing values. 
-file specifying the file name of Stan file coding Bayesian mulvariate Tobit regression (BMTR). 
+
+**file** specifying the file name of Stan file coding Bayesian mulvariate Tobit regression (BMTR). 
+
 **censpt** LOD values of incomplete data due for data below LOD
 
-# Sample
+# Examples
+```
+yobs = data_SHFS[,1:3]
+Zmat = data_SHFS[,4:ncol(data_SHFS)]
+censpt = c(0.52,0.42,2)
+BMTR (yobs, censpt, Zmat, file = 'mvnorm_cens.stan')
+```
