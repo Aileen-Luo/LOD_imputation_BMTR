@@ -1,4 +1,7 @@
-BMTR <- function (yobs, censpt, predictormat, censind, ...) {
+##Arthur: Bob Carpenter, Man Luo, Qixuan Chen
+##Date: October 12, 2021
+
+bmvTobit <- function (yobs, censpt, predictormat, censind, iter_m, ...) {
   yobs[is.na(yobs)] <- -99
   
   #standarization
@@ -33,7 +36,7 @@ BMTR <- function (yobs, censpt, predictormat, censind, ...) {
   
   fit <- rstan::sampling(model,
                          data = mvn_censreg_dat,
-                         chains = 2, iter = 1000,
+                         chains = 2, iter = iter_m,
                          control = list(max_treedepth = 5),
                          init = 0.5, seed = 1234, refresh = 10)
   
@@ -43,8 +46,7 @@ BMTR <- function (yobs, censpt, predictormat, censind, ...) {
   yimp <- yobs
   for (k in 1:50) {
     set.seed(1)
-    sample_ite <- sample(c((500 + 10*(k-1)):(500 + 10*k)), 1, replace=F)
-    
+    sample_ite <- sample(c(((iter_m/2) + (iter_m/100)*(k-1)):((iter_m/2) + (iter_m/100)*k)), 1, replace=F)
     y1_missing <- fit_ss$y_1_miss[sample_ite,]
     y2_missing <- fit_ss$y_2_miss[sample_ite,]
     y3_missing <- fit_ss$y_3_miss[sample_ite,]
