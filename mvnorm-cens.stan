@@ -1,16 +1,16 @@
 data {
-  int<lower = 0> N;  // 2126
-  int<lower = 0> K;  // 2
-  int<lower = 0> J;  // 7
+  int<lower = 0> N;  
+  int<lower = 0> K;  
+  int<lower = 0> J;  
   vector[K] y_obs[N];
   int<lower = 0, upper = 1> is_censored[N, K];
   vector[K] censor_point;
   vector[J] Z[N];
 }
 parameters {
-  vector<upper = censor_point[1]>[sum(is_censored[, 1])] y_1_miss;  // 646
-  vector<upper = censor_point[2]>[sum(is_censored[, 2])] y_2_miss;  // 516
-  vector<upper = censor_point[3]>[sum(is_censored[, 3])] y_3_miss;  // 594
+  vector<upper = censor_point[1]>[sum(is_censored[, 1])] y_1_miss;  
+  vector<upper = censor_point[2]>[sum(is_censored[, 2])] y_2_miss;  
+  vector<upper = censor_point[3]>[sum(is_censored[, 3])] y_3_miss;  
   matrix[K, J] beta;
   cholesky_factor_corr[K] L_Omega;
   vector<lower = 0>[K] sigma;
@@ -52,5 +52,5 @@ model {
 }
 
 generated quantities {
-  matrix[K, K] Omega = L_Omega * L_Omega';  // multiply_lower_tri_self_transpose(L_Omega);
+  matrix[K, K] Omega = L_Omega * L_Omega';  
 }
